@@ -20,6 +20,9 @@ export const metadata: Metadata = {
     locale: 'en_US',
     type: 'website',
   },
+  twitter: {
+    images: ['https://protofolio-git-main-pitok-dfs-projects.vercel.app/pito-desri-pauzi.png'],
+  },
   robots: {
     index: true,
     follow: true,
