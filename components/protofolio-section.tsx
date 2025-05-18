@@ -27,6 +27,13 @@ const projects = [
         link: "https://github.com/PitokDf/kmipn_pnp/"
     },
     {
+        title: "Scheduler Course",
+        description: "Aplikasi untuk menjadwalkan mata kuliah dengan fitur manajemen waktu.",
+        tags: ["Express.js", "Prisma", "Next.js", "TypeScript", "PostgreSQL"],
+        image: "/schedule-project.png",
+        link: "https://schedule-course.vercel.app/schedule"
+    },
+    {
         title: "Coming Soon...",
         description: "Coming soon...",
         tags: ["Coming Soon..."],

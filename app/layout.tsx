@@ -2,6 +2,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { ThemeProvider } from "@/components/theme-provider";
 import ThemeToggle from '@/components/theme-toogle';
+import DefaultLayout from '@/components/DefaultLayout';
 
 export const metadata: Metadata = {
   title: 'Pito Desri Pauzi - Protofolio',
@@ -55,7 +56,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <DefaultLayout>
+            {children}
+          </DefaultLayout>
         </ThemeProvider>
       </body>
     </html>

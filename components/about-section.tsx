@@ -3,7 +3,7 @@ import { CountdownTimer } from "./countdown-timer";
 import { Button } from "./ui/button";
 import { Github, Linkedin } from "lucide-react";
 
-const targetDate = new Date('2025-02-18');
+const targetDate = new Date('2025-09-01T00:00:00Z'); // Set your target date here
 export default function AboutSection() {
     return (
         <section id="about" className="py-24 bg-muted/30">
