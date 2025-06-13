@@ -7,24 +7,52 @@ import DefaultLayout from '@/components/DefaultLayout';
 export const metadata: Metadata = {
   title: 'Pito Desri Pauzi - Protofolio',
   icons: "/pito-desri-pauzi.webp",
-  description: 'Portfolio website showcasing my work and experience as a Full Stack Developer',
+  description: 'Website portofolio Pito Desri Pauzi yang menampilkan berbagai karya, pengalaman, dan keahlian sebagai Full Stack Developer di bidang frontend dan backend, menggunakan teknologi seperti React, Next.js, Laravel, Node.js, dan TypeScript.',
   keywords: [
-    'Full Stack Developer', 'Web Developer', 'Frontend', 'Backend', 'React', 'Next.js', 'Laravel', 'Node.js', 'Prisma', 'PostgreSQL', 'MySQL', 'JavaScript', 'TypeScript', 'API Development', 'Database Management', 'Version Control', 'GitHub', 'User Authentication', 'JWT'
+    'Full Stack Developer',
+    'Pengembang Web',
+    'Frontend Developer',
+    'Backend Developer',
+    'React',
+    'Next.js',
+    'Laravel',
+    'Node.js',
+    'Prisma',
+    'PostgreSQL',
+    'MySQL',
+    'JavaScript',
+    'TypeScript',
+    'Pengembangan API',
+    'Manajemen Database',
+    'Kontrol Versi',
+    'GitHub',
+    'Autentikasi Pengguna',
+    'JWT',
+    'Portofolio Web',
+    'Pengembang Aplikasi',
+    'Pengembang Website',
+    'Pengembang Web Indonesia',
+    'Full Stack Developer Indonesia',
+    'Portofolio Developer Padang',
+    'Programmer Padang',
+    'Politeknik Negeri Padang'
   ],
   authors: [{
     name: 'Pito Desri Pauzi', url: 'https://github.com/PitokDf'
   }],
   openGraph: {
     title: 'Pito Desri Pauzi - Protofolio',
-    description: 'Portfolio website showcasing my work and experience as a Full Stack Developer',
-    url: 'https://protofolio-ashy-one.vercel.app/',
+    description: 'Website portofolio Pito Desri Pauzi yang menampilkan berbagai karya, pengalaman, dan keahlian sebagai Full Stack Developer di bidang frontend dan backend, menggunakan teknologi seperti React, Next.js, Laravel, Node.js, dan TypeScript.',
+    url: 'https://pitok.my.id',
     siteName: 'Pito Desri Pauzi - Protofolio',
-    images: ['https://protofolio-ashy-one.vercel.app/pito-desri-pauzi.webp'],
-    locale: 'en_US',
+    images: ['https://pitok.my.id/pito-desri-pauzi.webp'],
+    locale: 'id_ID',
+    alternateLocale: ['en_US'],
     type: 'website',
   },
   twitter: {
-    images: ['https://protofolio-ashy-one.vercel.app/pito-desri-pauzi.webp'],
+    images: ['https://pitok.my.id/pito-desri-pauzi.webp'],
+    card: 'summary_large_image'
   },
   robots: {
     index: true,
@@ -38,7 +66,7 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: '7UVWLjtHfAA1ccchiarJNOFElAmh6e2a4nHTqbosAZU'
+    google: 'rn_Z6X4jvzUYXSQnplIA0HNo3mL6MhuDcpnbxwYeRgw'
   }
 };
 
@@ -48,7 +76,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="id" suppressHydrationWarning>
       <body>
         <ThemeProvider
           attribute="class"
@@ -56,6 +84,38 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <script
+            type='application/ld+json'
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "Person",
+                "name": "Pito Desri Pauzi",
+                "url": "https://pitok.my.id",
+                "image": "https://pitok.my.id/pito-desri-pauzi.webp",
+                "sameAs": [
+                  "https://www.linkedin.com/in/pito-desri-pauzi-181052314",
+                  "https://github.com/PitokDf"
+                ],
+                "jobTitle": "Fullstack Web Developer",
+                "worksFor": {
+                  "@type": "EducationalOrganization",
+                  "name": "Politeknik Negeri Padang"
+                },
+                "alumniOf": {
+                  "@type": "CollegeOrUniversity",
+                  "name": "Politeknik Negeri Padang"
+                },
+                "address": {
+                  "@type": "PostalAddress",
+                  "addressLocality": "Padang",
+                  "addressRegion": "Sumatera Barat",
+                  "addressCountry": "ID"
+                },
+                "description": "Mahasiswa Politeknik Negeri Padang dengan minat besar di dunia full-stack development. Berpengalaman dalam pengembangan sistem backend dan frontend."
+              })
+            }}
+          ></script>
           <DefaultLayout>
             {children}
           </DefaultLayout>
