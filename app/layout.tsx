@@ -7,7 +7,7 @@ import DefaultLayout from '@/components/DefaultLayout';
 export const metadata: Metadata = {
   title: 'Pito Desri Pauzi - Protofolio',
   icons: "/pito-desri-pauzi.webp",
-  description: 'Website portofolio Pito Desri Pauzi yang menampilkan berbagai karya, pengalaman, dan keahlian sebagai Full Stack Developer di bidang frontend dan backend, menggunakan teknologi seperti React, Next.js, Laravel, Node.js, dan TypeScript.',
+  description: 'Explore the portfolio of Full Stack Developer Pito Desri Pauzi, showcasing expertise in React, Node.js, Laravel, and more.',
   keywords: [
     'Full Stack Developer',
     'Pengembang Web',
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
   }],
   openGraph: {
     title: 'Pito Desri Pauzi - Protofolio',
-    description: 'Website portofolio Pito Desri Pauzi yang menampilkan berbagai karya, pengalaman, dan keahlian sebagai Full Stack Developer di bidang frontend dan backend, menggunakan teknologi seperti React, Next.js, Laravel, Node.js, dan TypeScript.',
+    description: 'Explore the portfolio of Full Stack Developer Pito Desri Pauzi, showcasing expertise in React, Node.js, Laravel, and more.',
     url: 'https://pitok.my.id',
     siteName: 'Pito Desri Pauzi - Protofolio',
     images: ['https://pitok.my.id/pito-desri-pauzi.webp'],
