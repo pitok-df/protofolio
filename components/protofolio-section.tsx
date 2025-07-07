@@ -24,7 +24,7 @@ const projects = [
         description: "Platform untuk mengelola partisipasi tim dan proposal dalam Kompetisi Mahasiswa Nasional bidang Informatika.",
         tags: ["Express.js", "Prisma", "Next.js", "TypeScript", "PostgreSQL"],
         image: "/kmipn-pnp.png",
-        link: "https://github.com/PitokDf/kmipn_pnp/"
+        link: "https://kmipn.pnp.ac.id/"
     },
     {
         title: "Scheduler Course",
