@@ -1,4 +1,0 @@
-User-agent: *
-Disallow: /api/
-Allow: /
-Sitemap: https://pitok.my.id/sitemap.xml

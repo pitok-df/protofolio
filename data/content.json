@@ -1,0 +1,251 @@
+{
+  "hero": {
+    "greeting": "Hello, I'm",
+    "name": "Pito Desri Pauzi",
+    "titles": [
+      "Full-Stack Developer",
+      "Web Architect",
+      "Code Craftsman",
+      "Problem Solver"
+    ],
+    "subtitle": "I build fast, scalable, and beautiful web experiences — from pixel-perfect frontends to rock-solid backends.",
+    "ctaPrimary": {
+      "label": "View My Work",
+      "href": "#projects"
+    },
+    "ctaSecondary": {
+      "label": "Contact Me",
+      "href": "#contact"
+    },
+    "availableForWork": true
+  },
+  "about": {
+    "bio": "Saya seorang mahasiswa semester 6 dengan minat besar di dunia full-stack development. Berpengalaman dalam mengembangkan sistem backend dan merancang antarmuka pengguna yang sederhana namun efektif.\n\nSaya selalu berusaha menulis kode yang bersih dan mudah dipelihara, serta menciptakan desain yang fokus pada kebutuhan pengguna. Passionate tentang membangun pengalaman digital yang intuitif dan berperforma tinggi lewat kode yang bersih.",
+    "facts": [
+      {
+        "value": "3+",
+        "label": "Years of Experience"
+      },
+      {
+        "value": "20+",
+        "label": "Projects Completed"
+      },
+      {
+        "value": "10+",
+        "label": "Happy Clients"
+      },
+      {
+        "value": "∞",
+        "label": "Cups of Coffee"
+      }
+    ]
+  },
+  "skills": {
+    "categories": [
+      {
+        "name": "Frontend",
+        "icon": "frontend",
+        "items": [
+          "React",
+          "Next.js",
+          "TypeScript",
+          "Tailwind CSS",
+          "Vue.js",
+          "Framer Motion"
+        ]
+      },
+      {
+        "name": "Backend",
+        "icon": "backend",
+        "items": [
+          "Node.js",
+          "Express.js",
+          "Laravel",
+          "PHP",
+          "REST API",
+          "GraphQL"
+        ]
+      },
+      {
+        "name": "Database",
+        "icon": "database",
+        "items": [
+          "PostgreSQL",
+          "MySQL",
+          "MongoDB",
+          "Redis",
+          "Prisma",
+          "Eloquent"
+        ]
+      },
+      {
+        "name": "DevOps & Tools",
+        "icon": "devops & tools",
+        "items": ["Git", "Docker", "Linux", "Nginx", "Vercel", "GitHub Actions"]
+      }
+    ]
+  },
+  "projects": [
+    {
+      "id": 1,
+      "title": "BOSS - Business One Stop System",
+      "description": "Platform Kasir & Manajemen Bisnis UMKM Indonesia. Sistem POS terintegrasi all-in-one untuk Owner (pantau keuangan real-time), Kasir (proses transaksi), Dapur, dan Antrian/Pesanan Pelanggan.",
+      "tags": ["React", "Next.js", "TypeScript", "TailwindCSS", "PostgreSQL"],
+      "liveUrl": "https://bossapp.id",
+      "githubUrl": "#",
+      "featured": true,
+      "gradient": "from-red-500 to-orange-500"
+    },
+    {
+      "id": 2,
+      "title": "E-Commerce Platform",
+      "description": "A full-featured e-commerce platform with real-time inventory management, payment integration, and a powerful admin dashboard.",
+      "tags": ["Next.js", "TypeScript", "PostgreSQL", "Stripe"],
+      "liveUrl": "#",
+      "githubUrl": "#",
+      "featured": true,
+      "gradient": "from-purple-500 to-pink-500"
+    },
+    {
+      "id": 3,
+      "title": "Task Management App",
+      "description": "A collaborative project management tool with real-time updates, drag-and-drop boards, and team collaboration features.",
+      "tags": ["React", "Node.js", "MongoDB", "Socket.io"],
+      "liveUrl": "#",
+      "githubUrl": "#",
+      "featured": false,
+      "gradient": "from-blue-500 to-cyan-500"
+    },
+    {
+      "id": 4,
+      "title": "API Gateway Service",
+      "description": "A high-performance API gateway with rate limiting, authentication, load balancing, and detailed analytics dashboard.",
+      "tags": ["Node.js", "Redis", "Docker", "Nginx"],
+      "liveUrl": "#",
+      "githubUrl": "#",
+      "featured": false,
+      "gradient": "from-green-500 to-teal-500"
+    }
+  ],
+  "experience": [
+    {
+      "id": 1,
+      "role": "Full-Stack Developer",
+      "company": "Freelance / Independent",
+      "period": "2023 — Present",
+      "description": "Building web applications for clients across various industries. Specializing in Next.js, Laravel, and PostgreSQL.",
+      "current": true
+    },
+    {
+      "id": 2,
+      "role": "Frontend Developer",
+      "company": "Tech Startup",
+      "period": "2022 — 2023",
+      "description": "Built and maintained responsive web interfaces using React and TypeScript. Collaborated with design and backend teams.",
+      "current": false
+    },
+    {
+      "id": 3,
+      "role": "Junior Web Developer",
+      "company": "Digital Agency",
+      "period": "2021 — 2022",
+      "description": "Developed client websites using PHP, Laravel, and Vue.js. Managed deployments and server configurations.",
+      "current": false
+    }
+  ],
+  "contact": {
+    "heading": "Let's Build Something Great",
+    "subheading": "Have a project in mind? I'd love to hear about it. Drop me a message and let's make it happen.",
+    "email": "pitokfauzi@pitok.my.id",
+    "social": {
+      "github": "https://github.com/PitokDf",
+      "linkedin": "https://www.linkedin.com/in/pito-desri-pauzi-181052314",
+      "instagram": "https://instagram.com/he04375439"
+    }
+  },
+  "meta": {
+    "siteTitle": "Pito Desri Pauzi - Portfolio | Full Stack Developer",
+    "siteDescription": "Explore the portfolio of Full Stack Developer Pito Desri Pauzi, showcasing expertise in React, Next.js, Node.js, Laravel, and more.",
+    "siteUrl": "https://pitok.my.id",
+    "ogImage": "https://pitok.my.id/pito-desri-pauzi.webp"
+  },
+  "education": [
+    {
+      "id": 1,
+      "degree": "D3 Teknik Komputer",
+      "school": "Politeknik Negeri Padang",
+      "period": "2023 — Present",
+      "description": "Fokus pada pemrograman komputer, jaringan komputer, administrasi server, dan rekayasa perangkat lunak."
+    }
+  ],
+  "certifications": [
+    {
+      "id": 1,
+      "title": "Belajar Membuat Aplikasi Back-End untuk Pemula",
+      "issuer": "Dicoding Indonesia",
+      "date": "2024"
+    },
+    {
+      "id": 2,
+      "title": "Responsive Web Design",
+      "issuer": "freeCodeCamp",
+      "date": "2023"
+    }
+  ],
+  "services": [
+    {
+      "id": 1,
+      "title": "Full-Stack Web App",
+      "description": "Mengembangkan aplikasi web lengkap dari database, backend, hingga antarmuka frontend (SaaS, Kasir POS, Admin Panel)."
+    },
+    {
+      "id": 2,
+      "title": "Backend API Development",
+      "description": "Membangun restful API server menggunakan Node.js/Express, Laravel, database PostgreSQL/MySQL, serta integrasi Redis caching."
+    },
+    {
+      "id": 3,
+      "title": "Frontend Slice & Integration",
+      "description": "Mengubah desain Figma menjadi halaman web interaktif pixel-perfect menggunakan React/Next.js dan TailwindCSS dengan animasi responsif."
+    }
+  ],
+  "setup": {
+    "os": "Ubuntu Linux (WSL2) & Windows 11 Pro",
+    "editor": "VS Code (Tokyo Night & Fira Code font)",
+    "terminal": "WSL Zsh Shell + Oh My Zsh",
+    "hardware": "Ryzen 7 Laptop, 16GB RAM, Dual Screen Setup"
+  },
+  "admin": {
+    "passwordHash": "pitok2024"
+  },
+  "features": {
+    "crtEnabled": true,
+    "biosBootEnabled": true,
+    "biosBootDuration": 4.5,
+    "biosTitle": "AMIBIOS (C) 1985 American Megatrends, Inc.",
+    "biosLines": [
+      "COMPANION OS v1.02 (C) 1985-2026 GE-MINI CORP",
+      "CPU: AGENT CORE 8x CLK @ 3.40GHz",
+      "MATH CO-PROCESSOR: INTEGRATED",
+      "RAM TEST: 640KB BASE OK / 16384KB EXTENDED OK",
+      "DETECTING SYSTEM MASCOTS...",
+      "  NEKO UNIT: PRIMARY DEVICE AT ADDR 0x3F8 ... OK",
+      "  ROBO UNIT: SECONDARY DEVICE AT ADDR 0x278 ... OK",
+      "MOUNTING SHELL MODULES...",
+      "  SYSTEM_CONSOLE.EXE ... MOUNTED",
+      "  AUDIO_SYNTH_CORE.DLL ... ACTIVE",
+      "  CRT_PHOSPHOR_GRID.DRV ... INSTALLED",
+      "  FLOPPY_DRIVE_CONTROLLER ... VERIFIED",
+      "ESTABLISHING SECURE PROTOCOLS ... LEVEL 1 SAFE",
+      "BOOTING OS..."
+    ],
+    "contextMenuEnabled": true,
+    "glitchEffectEnabled": true,
+    "devConsoleWarningEnabled": true,
+    "devConsoleWarningTitle": "⚠️ ATTENTION / PERINGATAN ⚠️",
+    "devConsoleWarningText": "Security alarm! Inspecting developer elements is forbidden.",
+    "synthSoundboardEnabled": true,
+    "floppyDiskDefaultTheme": "cyan",
+    "audioVolume": 0.2
+  }
+}
