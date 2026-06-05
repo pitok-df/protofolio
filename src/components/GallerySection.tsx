@@ -73,7 +73,7 @@ export default function GallerySection({ data }: { data: GalleryItem[] }) {
             >
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 <Monitor size={16} />
-                <span>file_explorer.exe - C:\DATA\GALLERY</span>
+                <span>file_explorer - /home/pitok/gallery</span>
               </div>
               <div style={{ display: "flex", gap: 4 }}>
                 <div style={{ width: 12, height: 12, border: "2px solid var(--bg-primary)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 9, cursor: "not-allowed" }}>_</div>
@@ -191,7 +191,7 @@ export default function GallerySection({ data }: { data: GalleryItem[] }) {
               >
                 <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                   <ImageIcon size={16} />
-                  <span>photo_viewer.exe - img_00{activePhotoIndex + 1}.png</span>
+                  <span>photo_viewer - img_00{activePhotoIndex + 1}.png</span>
                 </div>
                 <button 
                   type="button"
@@ -239,7 +239,7 @@ export default function GallerySection({ data }: { data: GalleryItem[] }) {
               {/* Photo Description area */}
               <div style={{ padding: 20, borderTop: "1px solid var(--border)", display: "flex", flexDirection: "column", gap: 8, background: "var(--bg-card)" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 11, fontFamily: "var(--font-mono)", color: "var(--text-muted)" }}>
-                  <span>Path: C:\DATA\GALLERY\img_00{activePhotoIndex + 1}.png</span>
+                  <span>Path: /home/pitok/gallery/img_00{activePhotoIndex + 1}.png</span>
                   <span>Date: {data[activePhotoIndex].date}</span>
                 </div>
                 <p style={{ fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.6, marginTop: 4 }}>

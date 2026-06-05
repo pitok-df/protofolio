@@ -303,9 +303,9 @@
       "  NEKO UNIT: PRIMARY DEVICE AT ADDR 0x3F8 ... OK",
       "  ROBO UNIT: SECONDARY DEVICE AT ADDR 0x278 ... OK",
       "MOUNTING SHELL MODULES...",
-      "  SYSTEM_CONSOLE.EXE ... MOUNTED",
-      "  AUDIO_SYNTH_CORE.DLL ... ACTIVE",
-      "  CRT_PHOSPHOR_GRID.DRV ... INSTALLED",
+      "  system_console.sh ... MOUNTED",
+      "  libaudio_synth_core.so ... ACTIVE",
+      "  crt_phosphor_grid.ko ... INSTALLED",
       "  FLOPPY_DRIVE_CONTROLLER ... VERIFIED",
       "ESTABLISHING SECURE PROTOCOLS ... LEVEL 1 SAFE",
       "BOOTING OS..."

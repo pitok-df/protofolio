@@ -2,11 +2,20 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
-export function useTypingEffect(text: string, speed = 40) {
+export function useTypingEffect(
+  text: string,
+  speed = 40,
+  onCharTyped?: (char: string, index: number) => void,
+) {
   const [displayedText, setDisplayedText] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const indexRef = useRef(0);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const onCharTypedRef = useRef(onCharTyped);
+
+  useEffect(() => {
+    onCharTypedRef.current = onCharTyped;
+  }, [onCharTyped]);
 
   useEffect(() => {
     if (!text) {
@@ -21,7 +30,11 @@ export function useTypingEffect(text: string, speed = 40) {
 
     const type = () => {
       if (indexRef.current < text.length) {
+        const char = text[indexRef.current];
         setDisplayedText(text.slice(0, indexRef.current + 1));
+        if (onCharTypedRef.current) {
+          onCharTypedRef.current(char, indexRef.current);
+        }
         indexRef.current++;
         timerRef.current = setTimeout(type, speed);
       } else {

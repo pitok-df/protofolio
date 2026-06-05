@@ -786,7 +786,7 @@ export default function SystemConsole({ features }: { features?: any }) {
 
           {mode === "synth" && (
             <div className="console-synth-container">
-              <div className="synth-title">RETRO_SYNTHESIZER.EXE</div>
+              <div className="synth-title">retro_synthesizer</div>
 
               <div className="synth-keys-grid">
                 {[
@@ -867,7 +867,7 @@ export default function SystemConsole({ features }: { features?: any }) {
 
           {mode === "floppy" && (
             <div className="console-floppy-container">
-              <div className="floppy-title">FLOPPY_DRIVE.EXE</div>
+              <div className="floppy-title">floppy_drive</div>
               <p className="floppy-desc">
                 Drag a system disk to slot or click to load:
               </p>
@@ -1001,12 +1001,14 @@ export default function SystemConsole({ features }: { features?: any }) {
         .console-window {
           width: 360px;
           height: 330px;
-          background: rgba(9, 9, 11, 0.96);
+          background: var(--glass-bg);
+          backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
           border: 1px solid var(--accent);
           border-radius: var(--radius-lg);
           display: flex;
           flex-direction: column;
-          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+          box-shadow: var(--shadow-lg);
           overflow: hidden;
           position: relative;
         }
@@ -1014,14 +1016,14 @@ export default function SystemConsole({ features }: { features?: any }) {
         .console-crt-scanline {
           position: absolute;
           top: 0; left: 0; bottom: 0; right: 0;
-          background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+          background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.08) 50%);
           background-size: 100% 4px;
           pointer-events: none;
           z-index: 10;
         }
 
         .console-header {
-          background: rgba(20, 20, 25, 0.9);
+          background: var(--bg-secondary);
           padding: 8px 12px;
           font-size: 11px;
           color: var(--accent);
@@ -1082,7 +1084,7 @@ export default function SystemConsole({ features }: { features?: any }) {
         }
 
         .log-text {
-          color: #f4f4f5;
+          color: var(--text-primary);
           word-break: break-all;
         }
 
@@ -1092,7 +1094,8 @@ export default function SystemConsole({ features }: { features?: any }) {
           display: flex;
           align-items: center;
           gap: 6px;
-          background: rgba(15, 15, 20, 0.9);
+          background: var(--bg-primary);
+          opacity: 0.95;
         }
 
         .console-prompt-char {
@@ -1106,7 +1109,7 @@ export default function SystemConsole({ features }: { features?: any }) {
           background: transparent;
           border: none;
           outline: none;
-          color: #ffffff;
+          color: var(--text-primary);
           font-family: var(--font-mono);
           font-size: 11px;
         }

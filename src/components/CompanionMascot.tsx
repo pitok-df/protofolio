@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { getAudio, playSound } from "@/data/audioManager";
 import {
   type ConversationStep,
   MASCOT_CONVERSATIONS,
@@ -524,6 +525,92 @@ function pickRandom<T>(arr: T[]): T {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
+const playBinaryVoice = (char: string, speaker: "neko" | "robo") => {
+  if (
+    typeof window === "undefined" ||
+    localStorage.getItem("soundEnabled") !== "true"
+  )
+    return;
+
+  const { context, analyser } = getAudio();
+  if (!context || !analyser) return;
+
+  try {
+    const charCode = char.charCodeAt(0);
+    const binary = charCode.toString(2).padStart(8, "0");
+
+    // Calculate dynamic parameters based on the binary string of the character
+    let activeBits = 0;
+    let weightedSum = 0;
+    for (let i = 0; i < binary.length; i++) {
+      if (binary[i] === "1") {
+        activeBits++;
+        weightedSum += (i + 1) * 15;
+      }
+    }
+
+    const osc = context.createOscillator();
+    const gainNode = context.createGain();
+
+    const storedVol = localStorage.getItem("audioVolume");
+    const baseVolume = storedVol !== null ? parseFloat(storedVol) : 0.7;
+    // Set output volume to at least 70% (0.7) as requested
+    const volume = Math.max(0.7, baseVolume);
+
+    if (speaker === "neko") {
+      osc.type = "sine";
+      // Neko: high-pitched cute sine wave sweep modulated by the binary value
+      const startFreq = 700 + weightedSum; // unique base freq per character
+      const endFreq = startFreq + activeBits * 25; // sweep range based on number of active bits
+
+      osc.frequency.setValueAtTime(startFreq, context.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(
+        endFreq,
+        context.currentTime + 0.05,
+      );
+
+      gainNode.gain.setValueAtTime(volume, context.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(
+        0.0001,
+        context.currentTime + 0.05,
+      );
+
+      osc.connect(gainNode);
+      gainNode.connect(analyser);
+
+      osc.start();
+      osc.stop(context.currentTime + 0.05);
+    } else {
+      osc.type = "square";
+      // Robo: lower-pitched metallic square sweep modulated by the binary value
+      const startFreq = 100 + (weightedSum % 90); // unique base freq per character
+      const endFreq = startFreq - activeBits * 10; // sweep down
+
+      osc.frequency.setValueAtTime(startFreq, context.currentTime);
+      osc.frequency.linearRampToValueAtTime(
+        endFreq,
+        context.currentTime + 0.06,
+      );
+
+      // Square wave is naturally loud, but user requested at least 70% output.
+      // We'll set it to volume * 0.8 to keep it clear and well-balanced but still meeting the 70% constraint!
+      gainNode.gain.setValueAtTime(volume * 0.8, context.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(
+        0.0001,
+        context.currentTime + 0.06,
+      );
+
+      osc.connect(gainNode);
+      gainNode.connect(analyser);
+
+      osc.start();
+      osc.stop(context.currentTime + 0.06);
+    }
+  } catch (err) {
+    console.error("Binary voice playback error:", err);
+  }
+};
+
 export default function CompanionMascot() {
   const [isVisible, setIsVisible] = useState(false);
   const [nekoBubble, setNekoBubble] = useState("");
@@ -808,6 +895,13 @@ export default function CompanionMascot() {
     if (isConversing.current) return;
     nekoCombo.current += 1;
     spawnParticles(nekoPos.x + MASCOT_SIZE / 2, nekoPos.y, "star", 5);
+
+    // Apply sudden physical jump force
+    const physics = nekoPhysics.current;
+    physics.vel = { x: (Math.random() - 0.5) * 12, y: -18 };
+    nekoDragPause.current = Date.now() + 2000;
+    if (wakeUpRef.current) wakeUpRef.current();
+
     if (nekoCombo.current >= 5) {
       nekoCombo.current = 0;
       setNekoMood("grumpy");
@@ -835,6 +929,13 @@ export default function CompanionMascot() {
     if (isConversing.current || roboRebooting) return;
     roboCombo.current += 1;
     spawnParticles(roboPos.x + MASCOT_SIZE / 2, roboPos.y, "spark", 5);
+
+    // Apply sudden physical jump force (Robo is slightly heavier than Neko)
+    const physics = roboPhysics.current;
+    physics.vel = { x: (Math.random() - 0.5) * 8, y: -14 };
+    roboDragPause.current = Date.now() + 2000;
+    if (wakeUpRef.current) wakeUpRef.current();
+
     if (roboCombo.current >= 5) {
       roboCombo.current = 0;
       setRoboMood("grumpy");
@@ -1312,15 +1413,113 @@ export default function CompanionMascot() {
         cursor.x - roboPhysics.current.pos.x,
         cursor.y - roboPhysics.current.pos.y,
       );
-      if (nekoDist < 120 && Math.random() < 0.08) {
-        const pool = (MASCOT_DIALOGUES.neko.moods as any)[nekoMoodRef.current];
-        if (pool) speak("neko", pickRandom(pool), 3000);
+
+      // Face the cursor if within 350px and not moving fast
+      const nekoToCursorX = cursor.x - nekoPhysics.current.pos.x;
+      if (
+        Math.abs(nekoToCursorX) < 350 &&
+        Math.abs(nekoPhysics.current.vel.x) < 0.2
+      ) {
+        setNekoFacingRight(nekoToCursorX > 0);
       }
-      if (roboDist < 120 && Math.random() < 0.08) {
-        const pool = (MASCOT_DIALOGUES.robo.moods as any)[roboMoodRef.current];
-        if (pool) speak("robo", pickRandom(pool), 3000);
+      const roboToCursorX = cursor.x - roboPhysics.current.pos.x;
+      if (
+        Math.abs(roboToCursorX) < 350 &&
+        Math.abs(roboPhysics.current.vel.x) < 0.2
+      ) {
+        setRoboFacingRight(roboToCursorX > 0);
       }
-    }, 5000);
+
+      // Neko pounces on cursor if very close
+      if (
+        nekoDist < 80 &&
+        nekoDist > 20 &&
+        Math.random() < 0.25 &&
+        Date.now() > nekoDragPause.current
+      ) {
+        const dx = cursor.x - nekoPhysics.current.pos.x;
+        const dy = cursor.y - nekoPhysics.current.pos.y;
+        const dist = Math.hypot(dx, dy);
+        if (dist > 0) {
+          nekoPhysics.current.vel.x += (dx / dist) * 9;
+          nekoPhysics.current.vel.y += (dy / dist) * 9 - 6; // jump up slightly
+          nekoDragPause.current = Date.now() + 2000;
+          setNekoMood("excited");
+          wakeUp();
+          if (Math.random() < 0.35) {
+            speak(
+              "neko",
+              pickRandom([
+                "Dapet! Eh, lolos lagi...",
+                "Jangan kabur kamu, mouse!",
+                "Nangkep kursor dulu ah!",
+                "Ada mainan lewat! Nyaaa~",
+              ]),
+              2500,
+            );
+          }
+        }
+      }
+
+      // Robo scans or dodges cursor if very close
+      if (
+        roboDist < 75 &&
+        Math.random() < 0.25 &&
+        Date.now() > roboDragPause.current
+      ) {
+        spawnParticles(
+          roboPhysics.current.pos.x + MASCOT_SIZE / 2,
+          roboPhysics.current.pos.y,
+          "spark",
+          3,
+        );
+        setRoboMood("excited");
+
+        // Play metallic scan sound
+        playSound(880, 0.05, "sine");
+        setTimeout(() => playSound(1320, 0.05, "sine"), 40);
+
+        if (Math.random() < 0.35) {
+          speak(
+            "robo",
+            pickRandom([
+              "Memindai kursor... Objek organik terdeteksi.",
+              "Analisis kursor: Latensi optimal.",
+              "BEEP! Jangan halangi sensor optik saya.",
+              "Objek asing terdeteksi di koordinat Robo!",
+            ]),
+            2500,
+          );
+        }
+
+        // Jump back slightly to avoid the cursor
+        const dx = roboPhysics.current.pos.x - cursor.x;
+        const dy = roboPhysics.current.pos.y - cursor.y;
+        const dist = Math.hypot(dx, dy);
+        if (dist > 0) {
+          roboPhysics.current.vel.x += (dx / dist) * 7;
+          roboPhysics.current.vel.y += (dy / dist) * 7 - 4;
+          roboDragPause.current = Date.now() + 2000;
+          wakeUp();
+        }
+      }
+
+      // Periodic proximity warnings (original behavior)
+      if (Math.random() < 0.05) {
+        if (nekoDist < 120) {
+          const pool = (MASCOT_DIALOGUES.neko.moods as any)[
+            nekoMoodRef.current
+          ];
+          if (pool) speak("neko", pickRandom(pool), 3000);
+        }
+        if (roboDist < 120) {
+          const pool = (MASCOT_DIALOGUES.robo.moods as any)[
+            roboMoodRef.current
+          ];
+          if (pool) speak("robo", pickRandom(pool), 3000);
+        }
+      }
+    }, 500);
 
     const idleFidgetInterval = setInterval(() => {
       if (socialMode.current) return;
@@ -1377,11 +1576,23 @@ export default function CompanionMascot() {
     let scrollThrottleTimer: ReturnType<typeof setTimeout> | null = null;
     let lastScroll = window.scrollY;
     const onScroll = () => {
+      const currentScroll = window.scrollY;
+      const scrollDiff = currentScroll - lastScroll;
+      lastScroll = currentScroll;
+
+      // Apply physical inertia from scroll to the mascots!
+      // When page scrolls down (positive scrollDiff), they float/lag upward (-y velocity)
+      // When page scrolls up (negative scrollDiff), they float/lag downward (+y velocity)
+      if (Math.abs(scrollDiff) > 2) {
+        nekoPhysics.current.vel.y -= scrollDiff * 0.08;
+        roboPhysics.current.vel.y -= scrollDiff * 0.06;
+        wakeUp();
+      }
+
       if (scrollThrottleTimer) return;
       scrollThrottleTimer = setTimeout(() => {
         scrollThrottleTimer = null;
         const delta = Math.abs(window.scrollY - lastScroll);
-        lastScroll = window.scrollY;
         if (delta > 50 && Math.random() < 0.06 && !isConversing.current) {
           const sp = Math.random() < 0.5 ? "neko" : "robo";
           speak(sp, pickRandom(MASCOT_DIALOGUES[sp].scroll), 3000);
@@ -1390,16 +1601,25 @@ export default function CompanionMascot() {
     };
     window.addEventListener("scroll", onScroll);
 
-    const hoverSetupTimer = setTimeout(() => {
-      document.querySelectorAll(".card, button, a").forEach((el) => {
-        el.addEventListener("mouseenter", () => {
-          if (Math.random() < 0.1 && !isConversing.current) {
-            const sp = Math.random() < 0.5 ? "neko" : "robo";
-            speak(sp, pickRandom(MASCOT_DIALOGUES[sp].hover), 3000);
-          }
-        });
-      });
-    }, 3000);
+    // Event delegation on mouseover for hover quotes
+    const onMouseEnterGlobal = (e: MouseEvent) => {
+      if (isConversing.current) return;
+      const target = e.target as HTMLElement;
+      if (!target) return;
+      const interactive = target.closest(
+        ".card, button, a, input, textarea, select, .project-card, [role='button']",
+      );
+      if (interactive) {
+        const lastHoverTime = (window as any).__lastMascotHoverTime || 0;
+        const now = Date.now();
+        if (now - lastHoverTime > 8000 && Math.random() < 0.18) {
+          (window as any).__lastMascotHoverTime = now;
+          const sp = Math.random() < 0.5 ? "neko" : "robo";
+          speak(sp, pickRandom(MASCOT_DIALOGUES[sp].hover), 3000);
+        }
+      }
+    };
+    window.addEventListener("mouseover", onMouseEnterGlobal);
 
     const themeObserver = new MutationObserver(() => {
       if (!isConversing.current) {
@@ -1440,29 +1660,30 @@ export default function CompanionMascot() {
       if (el) sectionObserver.observe(el);
     });
 
-    const inputTimer = setTimeout(() => {
-      const search = document.querySelector(
-        'input[placeholder="Search discussions..."]',
-      );
-      if (search) {
-        search.addEventListener("focus", () => {
-          if (Math.random() < 0.5) {
-            const sp = Math.random() < 0.5 ? "neko" : "robo";
-            speak(sp, pickRandom(MASCOT_DIALOGUES[sp].inputs.search), 3500);
-          }
-        });
+    // Event delegation on focusin for input focus quotes
+    const onFocusInGlobal = (e: FocusEvent) => {
+      if (isConversing.current) return;
+      const target = e.target as HTMLInputElement | HTMLTextAreaElement;
+      if (!target) return;
+      const placeholder = target.placeholder || "";
+      if (placeholder.includes("Search")) {
+        if (Math.random() < 0.6) {
+          const sp = Math.random() < 0.5 ? "neko" : "robo";
+          speak(sp, pickRandom(MASCOT_DIALOGUES[sp].inputs.search), 3500);
+        }
+      } else if (
+        target.tagName === "TEXTAREA" ||
+        placeholder.includes("Nama") ||
+        target.name === "name" ||
+        target.name === "message"
+      ) {
+        if (Math.random() < 0.5) {
+          const sp = Math.random() < 0.5 ? "neko" : "robo";
+          speak(sp, pickRandom(MASCOT_DIALOGUES[sp].inputs.reply), 3500);
+        }
       }
-      document
-        .querySelectorAll('textarea, input[placeholder="Nama Anda"]')
-        .forEach((el) => {
-          el.addEventListener("focus", () => {
-            if (Math.random() < 0.4) {
-              const sp = Math.random() < 0.5 ? "neko" : "robo";
-              speak(sp, pickRandom(MASCOT_DIALOGUES[sp].inputs.reply), 3500);
-            }
-          });
-        });
-    }, 3000);
+    };
+    window.addEventListener("focusin", onFocusInGlobal);
 
     const ambientInterval = setInterval(() => {
       if (Math.random() < 0.3 && !isConversing.current) {
@@ -1490,8 +1711,6 @@ export default function CompanionMascot() {
       clearTimeout(nekoWanderTimer);
       clearTimeout(roboWanderTimer);
       clearTimeout(greetTimer);
-      clearTimeout(hoverSetupTimer);
-      clearTimeout(inputTimer);
       clearInterval(idleInterval);
       clearInterval(cursorProximityInterval);
       clearInterval(idleFidgetInterval);
@@ -1503,15 +1722,30 @@ export default function CompanionMascot() {
       window.removeEventListener("keypress", onActivity);
       window.removeEventListener("scroll", onActivity);
       window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("mouseover", onMouseEnterGlobal);
+      window.removeEventListener("focusin", onFocusInGlobal);
       themeObserver.disconnect();
       sectionObserver.disconnect();
     };
   }, [speak, speakNeko, speakRobo, runDuet, pickWanderTarget]);
 
+  const handleNekoCharTyped = useCallback((char: string, index: number) => {
+    if (/[a-zA-Z0-9]/.test(char) && index % 3 === 0) {
+      playBinaryVoice(char, "neko");
+    }
+  }, []);
+
+  const handleRoboCharTyped = useCallback((char: string, index: number) => {
+    if (/[a-zA-Z0-9]/.test(char) && index % 3 === 0) {
+      playBinaryVoice(char, "robo");
+    }
+  }, []);
+
   const { displayedText: nekoTypedText, isTyping: nekoIsTyping } =
-    useTypingEffect(nekoText, 35);
+    useTypingEffect(nekoText, 35, handleNekoCharTyped);
+
   const { displayedText: roboTypedText, isTyping: roboIsTyping } =
-    useTypingEffect(roboText, 35);
+    useTypingEffect(roboText, 35, handleRoboCharTyped);
 
   if (!isVisible) return null;
 
