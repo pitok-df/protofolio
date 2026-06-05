@@ -999,8 +999,8 @@ body {
 
 .admin-hud-button:hover:not(:disabled) {
   border-color: var(--accent);
-  background: rgba(225, 29, 72, 0.1);
-  box-shadow: 0 0 12px rgba(225, 29, 72, 0.2);
+  background: var(--accent-subtle);
+  box-shadow: 0 0 12px var(--accent-glow);
 }
 
 .admin-hud-button:disabled {
@@ -1133,4 +1133,44 @@ html.bios-booting a,
 html.bios-booting button,
 html.bios-booting [role="button"] {
   cursor: auto !important;
+}
+
+/* ===== GALLERY STYLES & INTERACTIVE EFFECTS ===== */
+.gallery-item-card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 15px var(--accent-glow);
+  transform: translateY(-4px);
+}
+
+.gallery-item-card:hover .gallery-thumbnail-img {
+  transform: scale(1.08);
+}
+
+.gallery-item-card:hover .gallery-hover-overlay {
+  opacity: 1;
+}
+
+.gallery-nav-btn {
+  transition: all 0.2s ease;
+}
+
+.gallery-nav-btn:hover {
+  background: var(--accent);
+  color: var(--bg-primary);
+  box-shadow: 0 0 15px var(--accent-glow);
+}
+
+.modal-anim {
+  animation: modalSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes modalSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }

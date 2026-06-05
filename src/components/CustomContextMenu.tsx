@@ -172,6 +172,8 @@ export default function CustomContextMenu({ features }: { features?: any }) {
         return;
       }
 
+      if (!e.isTrusted) return;
+
       // Key shortcut detection for Developer Tools / inspect elements
       const isF12 = e.key === "F12";
       const isInspectShortcut =
@@ -187,6 +189,12 @@ export default function CustomContextMenu({ features }: { features?: any }) {
         (e.ctrlKey || e.metaKey) && (e.key === "U" || e.key === "u");
 
       if (isF12 || isInspectShortcut || isViewSource) {
+        console.warn("[Security] DevTools shortcut detected:", {
+          key: e.key,
+          ctrlKey: e.ctrlKey,
+          metaKey: e.metaKey,
+          shiftKey: e.shiftKey,
+        });
         triggerWarning();
       }
     };

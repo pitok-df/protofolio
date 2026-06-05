@@ -1,21 +1,21 @@
-import { promises as fs } from "fs";
 import { NextResponse } from "next/server";
-import path from "path";
-
-const CONTENT_PATH = path.join(process.cwd(), "data", "content.json");
+import { type ContentData, readData } from "@/data/db";
 
 export async function POST(request: Request) {
   try {
     const { password } = await request.json();
-    const raw = await fs.readFile(CONTENT_PATH, "utf-8");
-    const data = JSON.parse(raw);
+    const data = await readData<ContentData>(
+      "content",
+      "content.json",
+      {} as ContentData,
+    );
 
-    if (password !== data.admin.passwordHash) {
+    if (!data.admin || password !== data.admin.passwordHash) {
       return NextResponse.json({ error: "Invalid password" }, { status: 401 });
     }
 
     return NextResponse.json({ success: true });
-  } catch {
+  } catch (_error) {
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }

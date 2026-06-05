@@ -1,6 +1,3 @@
-import { promises as fs } from "fs";
-import { Heart } from "lucide-react";
-import path from "path";
 import AboutSection from "@/components/AboutSection";
 import BiosBoot from "@/components/BiosBoot";
 import CompanionMascot from "@/components/CompanionMascot";
@@ -8,6 +5,7 @@ import ContactSection from "@/components/ContactSection";
 import CustomContextMenu from "@/components/CustomContextMenu";
 import CustomCursor from "@/components/CustomCursor";
 import ExperienceSection from "@/components/ExperienceSection";
+import GallerySection from "@/components/GallerySection";
 import GuestbookSection from "@/components/GuestbookSection";
 import HeroSection from "@/components/HeroSection";
 import Navbar from "@/components/Navbar";
@@ -16,11 +14,10 @@ import ServicesSection from "@/components/ServicesSection";
 import SetupSection from "@/components/SetupSection";
 import SkillsSection from "@/components/SkillsSection";
 import SystemConsole from "@/components/SystemConsole";
+import { type ContentData, readData } from "@/data/db";
 
 async function getContent() {
-  const filePath = path.join(process.cwd(), "data", "content.json");
-  const raw = await fs.readFile(filePath, "utf-8");
-  return JSON.parse(raw);
+  return readData<ContentData>("content", "content.json", {} as ContentData);
 }
 
 export default async function Home() {
@@ -43,7 +40,7 @@ export default async function Home() {
       content.contact.social.instagram,
     ].filter(Boolean),
     description: content.meta.siteDescription,
-    knowsAbout: content.skills.categories.flatMap((cat: any) => cat.items),
+    knowsAbout: content.skills.categories.flatMap((cat) => cat.items),
   };
 
   return (
@@ -66,6 +63,7 @@ export default async function Home() {
         <SkillsSection data={content.skills} />
         <ServicesSection data={content.services} />
         <ProjectsSection data={content.projects} />
+        <GallerySection data={content.gallery || []} />
         <ExperienceSection
           experience={content.experience}
           education={content.education}

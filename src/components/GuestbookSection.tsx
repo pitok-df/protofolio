@@ -907,7 +907,7 @@ export default function GuestbookSection() {
         .discussion-feed-container {
           width: 100%;
         }
-        @media (max-width: 640px) {
+        @media (max-width: 768px) {
           .create-topic-row {
             grid-template-columns: 1fr !important;
             gap: 12px;

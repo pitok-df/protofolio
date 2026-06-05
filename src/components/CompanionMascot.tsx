@@ -587,6 +587,16 @@ export default function CompanionMascot() {
   const socialMode = useRef(false);
   const wakeUpRef = useRef<() => void>(() => {});
 
+  const nekoMoodRef = useRef<Mood>("neutral");
+  const roboMoodRef = useRef<Mood>("neutral");
+  const nekoEnergyRef = useRef(80);
+  const roboEnergyRef = useRef(100);
+
+  nekoMoodRef.current = nekoMood;
+  roboMoodRef.current = roboMood;
+  nekoEnergyRef.current = nekoEnergy;
+  roboEnergyRef.current = roboEnergy;
+
   const pickWanderTarget = useCallback((id: "neko" | "robo"): Vec2 => {
     const w = window.innerWidth;
     const h = window.innerHeight;
@@ -1282,8 +1292,8 @@ export default function CompanionMascot() {
               : MASCOT_DIALOGUES.robo.idle;
           const mood =
             sp === "neko"
-              ? (MASCOT_DIALOGUES.neko.moods as any)[nekoMood]
-              : (MASCOT_DIALOGUES.robo.moods as any)[roboMood];
+              ? (MASCOT_DIALOGUES.neko.moods as any)[nekoMoodRef.current]
+              : (MASCOT_DIALOGUES.robo.moods as any)[roboMoodRef.current];
           const combined = mood ? [...pool, ...mood] : pool;
           speak(sp, pickRandom(combined));
         }
@@ -1303,11 +1313,11 @@ export default function CompanionMascot() {
         cursor.y - roboPhysics.current.pos.y,
       );
       if (nekoDist < 120 && Math.random() < 0.08) {
-        const pool = (MASCOT_DIALOGUES.neko.moods as any)[nekoMood];
+        const pool = (MASCOT_DIALOGUES.neko.moods as any)[nekoMoodRef.current];
         if (pool) speak("neko", pickRandom(pool), 3000);
       }
       if (roboDist < 120 && Math.random() < 0.08) {
-        const pool = (MASCOT_DIALOGUES.robo.moods as any)[roboMood];
+        const pool = (MASCOT_DIALOGUES.robo.moods as any)[roboMoodRef.current];
         if (pool) speak("robo", pickRandom(pool), 3000);
       }
     }, 5000);
@@ -1344,17 +1354,23 @@ export default function CompanionMascot() {
     }, 4000);
 
     const moodDecayInterval = setInterval(() => {
-      setNekoEnergy((e) => Math.max(0, e - 1));
-      setRoboEnergy((e) => Math.max(0, e - 0.5));
-      setNekoMood((m: Mood) => {
-        if (nekoEnergy < 20) return "sleepy";
-        if (nekoEnergy > 70) return "happy";
-        return m === "excited" ? "happy" : m;
+      setNekoEnergy((e) => {
+        const next = Math.max(0, e - 1);
+        setNekoMood((m: Mood) => {
+          if (next < 20) return "sleepy";
+          if (next > 70) return "happy";
+          return m === "excited" ? "happy" : m;
+        });
+        return next;
       });
-      setRoboMood((m: Mood) => {
-        if (roboEnergy < 20) return "sleepy";
-        if (roboEnergy > 80) return "happy";
-        return m === "excited" ? "happy" : m;
+      setRoboEnergy((e) => {
+        const next = Math.max(0, e - 0.5);
+        setRoboMood((m: Mood) => {
+          if (next < 20) return "sleepy";
+          if (next > 80) return "happy";
+          return m === "excited" ? "happy" : m;
+        });
+        return next;
       });
     }, 30000);
 
@@ -1490,17 +1506,7 @@ export default function CompanionMascot() {
       themeObserver.disconnect();
       sectionObserver.disconnect();
     };
-  }, [
-    speak,
-    speakNeko,
-    speakRobo,
-    runDuet,
-    pickWanderTarget,
-    nekoMood,
-    roboMood,
-    nekoEnergy,
-    roboEnergy,
-  ]);
+  }, [speak, speakNeko, speakRobo, runDuet, pickWanderTarget]);
 
   const { displayedText: nekoTypedText, isTyping: nekoIsTyping } =
     useTypingEffect(nekoText, 35);

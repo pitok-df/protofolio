@@ -94,8 +94,8 @@ export default function RootLayout({
         />
         <script
           dangerouslySetInnerHTML={{
-            // Default to dark mode (same as old site)
-            __html: `(function(){try{var c=document.documentElement.classList;var t=localStorage.getItem('theme');if(t==='light'){c.add('light')}else{c.add('dark');if(!t)localStorage.setItem('theme','dark')}}catch(e){}})();`,
+            // Default to dark mode (same as old site) and add bios-booting class immediately if not booted yet
+            __html: `(function(){try{var c=document.documentElement.classList;var t=localStorage.getItem('theme');if(t==='light'){c.add('light')}else{c.add('dark');if(!t)localStorage.setItem('theme','dark')}if(sessionStorage.getItem('biosBooted')!=='true'){c.add('bios-booting')}}catch(e){}})();`,
           }}
         />
       </head>

@@ -97,6 +97,7 @@ export default function Navbar({ features }: { features?: any }) {
     { id: "about", label: "About" },
     { id: "skills", label: "Skills" },
     { id: "projects", label: "Projects" },
+    { id: "gallery", label: "Gallery" },
     { id: "experience", label: "Experience" },
     { id: "guestbook", label: "Guestbook" },
     { id: "contact", label: "Contact" },

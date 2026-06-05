@@ -3,12 +3,9 @@
     "greeting": "Hello, I'm",
     "name": "Pito Desri Pauzi",
     "titles": [
-      "Full-Stack Developer",
-      "Web Architect",
-      "Code Craftsman",
-      "Problem Solver"
+      "Full Stack Web Developer"
     ],
-    "subtitle": "I build fast, scalable, and beautiful web experiences — from pixel-perfect frontends to rock-solid backends.",
+    "subtitle": "Saya seorang mahasiswa semester 6 dengan minat besar di dunia full-stack development. Berpengalaman dalam mengembangkan sistem backend dan merancang antarmuka pengguna yang sederhana namun efektif. Saya selalu berusaha menulis kode yang bersih dan mudah dipelihara, serta menciptakan desain yang fokus pada kebutuhan pengguna.",
     "ctaPrimary": {
       "label": "View My Work",
       "href": "#projects"
@@ -20,7 +17,7 @@
     "availableForWork": true
   },
   "about": {
-    "bio": "Saya seorang mahasiswa semester 6 dengan minat besar di dunia full-stack development. Berpengalaman dalam mengembangkan sistem backend dan merancang antarmuka pengguna yang sederhana namun efektif.\n\nSaya selalu berusaha menulis kode yang bersih dan mudah dipelihara, serta menciptakan desain yang fokus pada kebutuhan pengguna. Passionate tentang membangun pengalaman digital yang intuitif dan berperforma tinggi lewat kode yang bersih.",
+    "bio": "Saya seorang mahasiswa semester 6 dengan minat besar di dunia full-stack development. Berpengalaman dalam mengembangkan sistem backend dan merancang antarmuka pengguna yang sederhana namun efektif. Saya selalu berusaha menulis kode yang bersih dan mudah dipelihara, serta menciptakan desain yang fokus pada kebutuhan pengguna.",
     "facts": [
       {
         "value": "3+",
@@ -46,85 +43,139 @@
         "name": "Frontend",
         "icon": "frontend",
         "items": [
-          "React",
-          "Next.js",
-          "TypeScript",
-          "Tailwind CSS",
-          "Vue.js",
-          "Framer Motion"
+          "React"
         ]
       },
       {
         "name": "Backend",
         "icon": "backend",
         "items": [
-          "Node.js",
-          "Express.js",
           "Laravel",
-          "PHP",
-          "REST API",
-          "GraphQL"
+          "Node.js",
+          "Express.js"
+        ]
+      },
+      {
+        "name": "Framework",
+        "icon": "framework",
+        "items": [
+          "Next.js"
+        ]
+      },
+      {
+        "name": "Language",
+        "icon": "language",
+        "items": [
+          "TypeScript"
+        ]
+      },
+      {
+        "name": "ORM",
+        "icon": "orm",
+        "items": [
+          "Prisma"
         ]
       },
       {
         "name": "Database",
         "icon": "database",
         "items": [
-          "PostgreSQL",
-          "MySQL",
-          "MongoDB",
-          "Redis",
-          "Prisma",
-          "Eloquent"
+          "PostgreSQL"
         ]
       },
       {
-        "name": "DevOps & Tools",
-        "icon": "devops & tools",
-        "items": ["Git", "Docker", "Linux", "Nginx", "Vercel", "GitHub Actions"]
+        "name": "Tools",
+        "icon": "tools",
+        "items": [
+          "Git"
+        ]
+      },
+      {
+        "name": "Styling",
+        "icon": "styling",
+        "items": [
+          "Tailwind CSS"
+        ]
       }
     ]
   },
   "projects": [
     {
-      "id": 1,
-      "title": "BOSS - Business One Stop System",
-      "description": "Platform Kasir & Manajemen Bisnis UMKM Indonesia. Sistem POS terintegrasi all-in-one untuk Owner (pantau keuangan real-time), Kasir (proses transaksi), Dapur, dan Antrian/Pesanan Pelanggan.",
-      "tags": ["React", "Next.js", "TypeScript", "TailwindCSS", "PostgreSQL"],
+      "id": 1483939427,
+      "title": "Pencatatan Pengeluaran",
+      "description": "Sistem untuk mencatat pengeluaran dengan dashboard yang mudah dipahami dan fitur analisis keuangan.",
+      "tags": [
+        "Next.js",
+        "PostgreSQL",
+        "TypeScript",
+        "Prisma"
+      ],
+      "liveUrl": "https://catatan-pengeluaran-three.vercel.app/",
+      "githubUrl": "#",
+      "featured": true,
+      "gradient": "https://pitok.my.id/pencatatan-pengeluaran.png"
+    },
+    {
+      "id": 710803499,
+      "title": "IT Ventory",
+      "description": "Aplikasi manajemen inventaris barang dengan fitur pencatatan dan pelacakan yang efisien.",
+      "tags": [
+        "Laravel",
+        "MySQL",
+        "Node.js"
+      ],
+      "liveUrl": "http://it-ventory.kesug.com/",
+      "githubUrl": "#",
+      "featured": true,
+      "gradient": "/it-ventory.png"
+    },
+    {
+      "id": 379435954,
+      "title": "BOSS",
+      "description": "Membuat platform bisnis yang terintegrasi dengan manajemen UMKM dan sistem POS",
+      "tags": [
+        "Next.js",
+        "tailwind css",
+        "rabbit MQ",
+        "prisma",
+        "express",
+        "terus"
+      ],
       "liveUrl": "https://bossapp.id",
       "githubUrl": "#",
       "featured": true,
-      "gradient": "from-red-500 to-orange-500"
+      "gradient": "https://pitok.my.id/pito-desri-pauzi.webp"
     },
     {
-      "id": 2,
-      "title": "E-Commerce Platform",
-      "description": "A full-featured e-commerce platform with real-time inventory management, payment integration, and a powerful admin dashboard.",
-      "tags": ["Next.js", "TypeScript", "PostgreSQL", "Stripe"],
-      "liveUrl": "#",
+      "id": 1041510759,
+      "title": "KMIPN PNP",
+      "description": "Platform untuk mengelola partisipasi tim dan proposal dalam Kompetisi Mahasiswa Nasional bidang Informatika.",
+      "tags": [
+        "Express.js",
+        "Prisma",
+        "Next.js",
+        "TypeScript",
+        "PostgreSQL"
+      ],
+      "liveUrl": "https://kmipn.pnp.ac.id/",
       "githubUrl": "#",
       "featured": true,
-      "gradient": "from-purple-500 to-pink-500"
+      "gradient": "/kmipn-pnp.png"
     },
     {
-      "id": 3,
-      "title": "Task Management App",
-      "description": "A collaborative project management tool with real-time updates, drag-and-drop boards, and team collaboration features.",
-      "tags": ["React", "Node.js", "MongoDB", "Socket.io"],
-      "liveUrl": "#",
+      "id": 1091944117,
+      "title": "Scheduler Course",
+      "description": "Aplikasi untuk menjadwalkan mata kuliah dengan fitur manajemen waktu.",
+      "tags": [
+        "Express.js",
+        "Prisma",
+        "Next.js",
+        "TypeScript"
+      ],
+      "liveUrl": "https://schedule-course.vercel.app/schedule",
       "githubUrl": "#",
-      "featured": false,
-      "gradient": "from-blue-500 to-cyan-500"
-    },
-    {
-      "id": 4,
-      "title": "API Gateway Service",
-      "description": "A high-performance API gateway with rate limiting, authentication, load balancing, and detailed analytics dashboard.",
-      "tags": ["Node.js", "Redis", "Docker", "Nginx"],
-      "liveUrl": "#",
-      "githubUrl": "#",
-      "featured": false,
-      "gradient": "from-green-500 to-teal-500"
+      "featured": true,
+      "gradient": "https://pitok.my.id/schedule-project.png"
     }
   ],
   "experience": [
@@ -172,9 +223,9 @@
   "education": [
     {
       "id": 1,
-      "degree": "D3 Teknik Komputer",
+      "degree": "D4 Teknologi Rekayasa Perangkat Lunak",
       "school": "Politeknik Negeri Padang",
-      "period": "2023 — Present",
+      "period": "2022 — Present",
       "description": "Fokus pada pemrograman komputer, jaringan komputer, administrasi server, dan rekayasa perangkat lunak."
     }
   ],
@@ -218,6 +269,26 @@
   "admin": {
     "passwordHash": "pitok2024"
   },
+  "gallery": [
+    {
+      "id": 1,
+      "url": "/images/gallery/workspace_setup.png",
+      "caption": "My primary developer workspace setup with dual monitor layout and glowing accent backlights.",
+      "date": "2026-06-01"
+    },
+    {
+      "id": 2,
+      "url": "/images/gallery/retro_keyboard.png",
+      "caption": "Close-up of my mechanical keyboard featuring retro keycaps and warm orange underglow.",
+      "date": "2026-06-03"
+    },
+    {
+      "id": 3,
+      "url": "/images/gallery/retro_terminal.png",
+      "caption": "Vintage amber-orange CRT monitor displaying retro green phosphor CLI shell logs.",
+      "date": "2026-06-05"
+    }
+  ],
   "features": {
     "crtEnabled": true,
     "biosBootEnabled": true,

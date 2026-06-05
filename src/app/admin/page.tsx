@@ -11,9 +11,11 @@ import {
   GraduationCap,
   HardDrive,
   Home,
+  Image as ImageIcon,
   Loader2,
   type LucideIcon,
   Mail,
+  Menu,
   MessageSquare,
   Monitor,
   Radio,
@@ -29,9 +31,8 @@ import {
   User,
   Volume2,
   Wrench,
-  Zap,
-  Menu,
   X,
+  Zap,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import CustomCursor from "@/components/CustomCursor";
@@ -123,6 +124,14 @@ interface ContentData {
     floppyDiskDefaultTheme: string;
     audioVolume: number;
   };
+  gallery?: GalleryItem[];
+}
+
+interface GalleryItem {
+  id: number;
+  url: string;
+  caption: string;
+  date: string;
 }
 
 const SECTIONS: {
@@ -178,6 +187,12 @@ const SECTIONS: {
     category: "content",
   },
   { id: "setup", label: "Workspace Setup", Icon: Monitor, category: "content" },
+  {
+    id: "gallery",
+    label: "Image Gallery",
+    Icon: ImageIcon,
+    category: "content",
+  },
   { id: "contact", label: "Contact Channels", Icon: Mail, category: "content" },
   { id: "meta", label: "SEO Registry", Icon: Search, category: "content" },
 ];
@@ -1142,6 +1157,9 @@ export default function AdminPage() {
           )}
           {activeSection === "setup" && (
             <SetupEditor content={content} setContent={setContent} />
+          )}
+          {activeSection === "gallery" && (
+            <GalleryEditor content={content} setContent={setContent} />
           )}
           {activeSection === "contact" && (
             <ContactEditor content={content} setContent={setContent} />
@@ -2471,6 +2489,140 @@ function SetupEditor({
   );
 }
 
+function GalleryEditor({
+  content,
+  setContent,
+}: {
+  content: ContentData;
+  setContent: React.Dispatch<React.SetStateAction<ContentData | null>>;
+}) {
+  const gallery = content.gallery || [];
+
+  const updateItem = (i: number, key: string, value: unknown) => {
+    const updated = [...gallery];
+    updated[i] = { ...updated[i], [key]: value };
+    setContent((prev) => (prev ? { ...prev, gallery: updated } : prev));
+  };
+
+  const addItem = () => {
+    const newItem = {
+      id: Date.now(),
+      url: "/images/gallery/workspace_setup.png",
+      caption: "New gallery image caption",
+      date: new Date().toISOString().split("T")[0],
+    };
+    setContent((prev) =>
+      prev ? { ...prev, gallery: [...(prev.gallery || []), newItem] } : prev,
+    );
+  };
+
+  const removeItem = (i: number) => {
+    setContent((prev) =>
+      prev
+        ? {
+            ...prev,
+            gallery: (prev.gallery || []).filter((_, idx) => idx !== i),
+          }
+        : prev,
+    );
+  };
+
+  return (
+    <div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+        {gallery.map((item, i) => (
+          <div
+            key={item.id}
+            style={{
+              padding: 24,
+              background: "var(--bg-secondary)",
+              borderRadius: "var(--radius-md)",
+              border: "1px solid var(--border)",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: 20,
+              }}
+            >
+              <h3
+                style={{
+                  fontSize: 16,
+                  fontWeight: 600,
+                  color: "var(--text-primary)",
+                  fontFamily: "var(--font-mono)",
+                }}
+              >
+                IMAGE #{i + 1}
+              </h3>
+              <button
+                onClick={() => removeItem(i)}
+                className="admin-hud-button"
+                style={{
+                  padding: "6px 12px",
+                  borderColor: "rgba(239, 68, 68, 0.4)",
+                  color: "#ef4444",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 6,
+                  cursor: "pointer",
+                }}
+              >
+                <Trash2 size={14} /> Remove
+              </button>
+            </div>
+
+            <div className="admin-grid-2col">
+              <Field label="Image URL">
+                <Input
+                  value={item.url}
+                  onChange={(v) => updateItem(i, "url", v)}
+                  placeholder="/images/gallery/setup.png"
+                />
+              </Field>
+
+              <Field label="Date (YYYY-MM-DD)">
+                <Input
+                  value={item.date}
+                  onChange={(v) => updateItem(i, "date", v)}
+                  placeholder="2026-06-05"
+                />
+              </Field>
+            </div>
+
+            <Field label="Caption / Description">
+              <Textarea
+                value={item.caption}
+                onChange={(v) => updateItem(i, "caption", v)}
+                rows={3}
+              />
+            </Field>
+          </div>
+        ))}
+
+        <button
+          onClick={addItem}
+          className="admin-hud-button"
+          style={{
+            padding: "12px",
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 8,
+            cursor: "pointer",
+          }}
+        >
+          Add New Image
+        </button>
+      </div>
+    </div>
+  );
+}
+
 // ===== SYSTEM MONITOR & CONTROL DECK COMPONENTS =====
 
 function DashboardOverview({
@@ -3424,6 +3576,7 @@ function GuestbookModerator({ password }: { password?: string }) {
           {messages.map((m) => (
             <div
               key={m.id}
+              className="admin-comment-card"
               style={{
                 padding: "16px",
                 background: "rgba(0,0,0,0.2)",
@@ -3513,6 +3666,18 @@ function GuestbookModerator({ password }: { password?: string }) {
       <style>{`
         .spin { animation: spin 0.8s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
+        
+        @media (max-width: 768px) {
+          .admin-comment-card {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 12px !important;
+          }
+          .admin-comment-card button {
+            align-self: flex-end;
+            width: auto;
+          }
+        }
       `}</style>
     </div>
   );

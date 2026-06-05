@@ -1,17 +1,17 @@
-import { promises as fs } from "fs";
 import { NextResponse } from "next/server";
-import path from "path";
-
-const CONTENT_PATH = path.join(process.cwd(), "data", "content.json");
+import { type ContentData, readData, writeData } from "@/data/db";
 
 export async function GET() {
   try {
-    const raw = await fs.readFile(CONTENT_PATH, "utf-8");
-    const data = JSON.parse(raw);
+    const data = await readData<ContentData>(
+      "content",
+      "content.json",
+      {} as ContentData,
+    );
     // Don't expose admin password
     const { admin: _admin, ...safe } = data;
     return NextResponse.json(safe);
-  } catch {
+  } catch (_error) {
     return NextResponse.json(
       { error: "Failed to read content" },
       { status: 500 },
@@ -25,11 +25,14 @@ export async function POST(request: Request) {
     const { password, ...updates } = body;
 
     // Read existing content
-    const raw = await fs.readFile(CONTENT_PATH, "utf-8");
-    const existing = JSON.parse(raw);
+    const existing = await readData<ContentData>(
+      "content",
+      "content.json",
+      {} as ContentData,
+    );
 
     // Verify password
-    if (password !== existing.admin.passwordHash) {
+    if (!existing.admin || password !== existing.admin.passwordHash) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -40,10 +43,14 @@ export async function POST(request: Request) {
       admin: existing.admin, // always keep admin config
     };
 
-    await fs.writeFile(CONTENT_PATH, JSON.stringify(updated, null, 2), "utf-8");
+    await writeData<ContentData>(
+      "content",
+      "content.json",
+      updated as ContentData,
+    );
 
     return NextResponse.json({ success: true });
-  } catch {
+  } catch (_error) {
     return NextResponse.json(
       { error: "Failed to save content" },
       { status: 500 },
