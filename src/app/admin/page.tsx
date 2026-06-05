@@ -30,6 +30,8 @@ import {
   Volume2,
   Wrench,
   Zap,
+  Menu,
+  X,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import CustomCursor from "@/components/CustomCursor";
@@ -421,6 +423,18 @@ export default function AdminPage() {
   const [ramLoad, setRamLoad] = useState(64);
   const [adminCrt, setAdminCrt] = useState(false);
   const [timeString, setTimeString] = useState("");
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const handleSectionClick = (sectionId: string) => {
+    setActiveSection(sectionId);
+    setIsMobileMenuOpen(false);
+    if (
+      typeof window !== "undefined" &&
+      localStorage.getItem("soundEnabled") === "true"
+    ) {
+      playSound(880, 0.05, "sine");
+    }
+  };
 
   useEffect(() => {
     const updateTime = () => {
@@ -533,16 +547,55 @@ export default function AdminPage() {
   }
 
   return (
-    <div
-      className={adminCrt ? "crt-active" : ""}
-      style={{
-        display: "flex",
-        minHeight: "100dvh",
-        background: "var(--bg-primary)",
-      }}
-    >
+    <div className={`${adminCrt ? "crt-active" : ""} admin-layout-container`}>
+      {/* Mobile Header Bar */}
+      <header className="admin-mobile-header">
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <div
+            style={{
+              width: 24,
+              height: 24,
+              background: "var(--accent)",
+              borderRadius: 6,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontFamily: "var(--font-mono)",
+              fontWeight: 800,
+              fontSize: 10,
+              color: "white",
+            }}
+          >
+            PD
+          </div>
+          <span
+            style={{
+              fontSize: 13,
+              fontWeight: 700,
+              color: "var(--text-primary)",
+            }}
+          >
+            Admin Panel
+          </span>
+        </div>
+        <button
+          className="admin-mobile-toggle"
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          aria-label="Toggle Navigation Menu"
+          style={{ width: "auto" }}
+        >
+          {isMobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
+        </button>
+      </header>
+
+      {/* Backdrop overlay for mobile menu */}
+      <div
+        className={`admin-sidebar-backdrop ${isMobileMenuOpen ? "open" : ""}`}
+        onClick={() => setIsMobileMenuOpen(false)}
+      />
+
       {/* Sidebar */}
-      <aside className="admin-sidebar">
+      <aside className={`admin-sidebar ${isMobileMenuOpen ? "open" : ""}`}>
         <div style={{ padding: "24px 20px" }}>
           {/* Logo */}
           <div
@@ -609,15 +662,7 @@ export default function AdminPage() {
                 (section) => (
                   <button
                     key={section.id}
-                    onClick={() => {
-                      setActiveSection(section.id);
-                      if (
-                        typeof window !== "undefined" &&
-                        localStorage.getItem("soundEnabled") === "true"
-                      ) {
-                        playSound(880, 0.05, "sine");
-                      }
-                    }}
+                    onClick={() => handleSectionClick(section.id)}
                     className={`admin-nav-item ${activeSection === section.id ? "active" : ""}`}
                     style={{
                       width: "100%",
@@ -654,15 +699,7 @@ export default function AdminPage() {
               {SECTIONS.filter((s) => s.category === "core").map((section) => (
                 <button
                   key={section.id}
-                  onClick={() => {
-                    setActiveSection(section.id);
-                    if (
-                      typeof window !== "undefined" &&
-                      localStorage.getItem("soundEnabled") === "true"
-                    ) {
-                      playSound(880, 0.05, "sine");
-                    }
-                  }}
+                  onClick={() => handleSectionClick(section.id)}
                   className={`admin-nav-item ${activeSection === section.id ? "active" : ""}`}
                   style={{
                     width: "100%",
@@ -720,15 +757,7 @@ export default function AdminPage() {
                   (section) => (
                     <button
                       key={section.id}
-                      onClick={() => {
-                        setActiveSection(section.id);
-                        if (
-                          typeof window !== "undefined" &&
-                          localStorage.getItem("soundEnabled") === "true"
-                        ) {
-                          playSound(880, 0.05, "sine");
-                        }
-                      }}
+                      onClick={() => handleSectionClick(section.id)}
                       className={`admin-nav-item ${activeSection === section.id ? "active" : ""}`}
                       style={{
                         width: "100%",
@@ -917,28 +946,9 @@ export default function AdminPage() {
       </aside>
 
       {/* Main Content */}
-      <main
-        className="admin-content"
-        style={{ flex: 1, display: "flex", flexDirection: "column" }}
-      >
+      <main className="admin-content">
         {/* Header HUD / Status Bar */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            padding: "16px 24px",
-            background: "rgba(10, 10, 12, 0.4)",
-            border: "1px solid var(--border)",
-            borderRadius: "var(--radius-md)",
-            marginBottom: 24,
-            fontFamily: "var(--font-mono)",
-            fontSize: 12,
-            color: "var(--text-secondary)",
-            flexWrap: "wrap",
-            gap: 16,
-          }}
-        >
+        <div className="admin-header-hud">
           <div
             style={{
               display: "flex",
@@ -1195,7 +1205,7 @@ function HeroEditor({
         />
       </Field>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+      <div className="admin-grid-2col">
         <Field label="CTA Primary Label">
           <Input
             value={hero.ctaPrimary.label}
@@ -1304,9 +1314,7 @@ function AboutEditor({
         >
           Stats / Facts
         </div>
-        <div
-          style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}
-        >
+        <div className="admin-grid-2col">
           {about.facts.map((fact, i) => (
             <div
               key={i}
@@ -1317,13 +1325,7 @@ function AboutEditor({
                 border: "1px solid var(--border)",
               }}
             >
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 2fr",
-                  gap: 12,
-                }}
-              >
+              <div className="admin-grid-1to2">
                 <div>
                   <div
                     style={{
@@ -1649,13 +1651,7 @@ function ProjectsEditor({
               </div>
             </div>
 
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: 16,
-              }}
-            >
+            <div className="admin-grid-2col">
               <Field label="Title">
                 <Input
                   value={project.title}
@@ -1702,13 +1698,7 @@ function ProjectsEditor({
               />
             </Field>
 
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: 16,
-              }}
-            >
+            <div className="admin-grid-2col">
               <Field label="Live URL">
                 <Input
                   value={project.liveUrl}
@@ -1830,13 +1820,7 @@ function ExperienceEditor({
               </button>
             </div>
 
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr 1fr",
-                gap: 16,
-              }}
-            >
+            <div className="admin-grid-3col">
               <Field label="Role">
                 <Input
                   value={exp.role}
@@ -2152,13 +2136,7 @@ function EducationEditor({
               </button>
             </div>
 
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr 1fr",
-                gap: 16,
-              }}
-            >
+            <div className="admin-grid-3col">
               <Field label="Degree / Program">
                 <Input
                   value={edu.degree}
@@ -2289,13 +2267,7 @@ function CertificationsEditor({
               </button>
             </div>
 
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr 1fr",
-                gap: 16,
-              }}
-            >
+            <div className="admin-grid-3col">
               <Field label="Certification Title">
                 <Input
                   value={cert.title}
@@ -2800,14 +2772,7 @@ function DashboardOverview({
       </div>
 
       {/* Two columns: Transmission log & actions */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "2fr 1fr",
-          gap: 24,
-          contentVisibility: "auto",
-        }}
-      >
+      <div className="admin-grid-sidebar" style={{ contentVisibility: "auto" }}>
         {/* Left Col: Live Transmission Feeds */}
         <div className="admin-hud-card">
           <div className="admin-hud-title">
@@ -3109,14 +3074,7 @@ function FeaturesEditor({
             </div>
           </div>
 
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "2fr 1fr",
-              gap: 16,
-              marginTop: 4,
-            }}
-          >
+          <div className="admin-grid-sidebar" style={{ marginTop: 4 }}>
             <Field label="BIOS Firmware Header">
               <input
                 type="text"
@@ -3163,9 +3121,7 @@ function FeaturesEditor({
           Menu & security warning shields
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-          <div
-            style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}
-          >
+          <div className="admin-grid-2col">
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
               <input
                 type="checkbox"
@@ -3336,14 +3292,7 @@ function FeaturesEditor({
             </div>
           </div>
 
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: 16,
-              marginTop: 4,
-            }}
-          >
+          <div className="admin-grid-2col" style={{ marginTop: 4 }}>
             <Field label="Default Floppy Theme disk">
               <select
                 className="admin-hud-input"
